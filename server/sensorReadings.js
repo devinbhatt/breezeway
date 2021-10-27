@@ -5,7 +5,7 @@ const dhtSensor = require('node-dht-sensor');
 const cfg = require('./config.json');
 
 //Prototype of getSensorReadings function
-const getSensorReadings = (callback) => {
+/*const getSensorReadings = (callback) => {
     dhtSensor.read(this.type, this.pin, function(err, temperature) {
         if (err) {
             return callback(err)
@@ -13,11 +13,20 @@ const getSensorReadings = (callback) => {
 
         callback(null, temperature)
     })
-}
+} */
 
 //Add getSensorReadings and null cache to each sensor object
 cfg.sensors.forEach(function(sensor) {
-    sensor.getSensorReadings = getSensorReadings;
+    sensor.getSensorReadings = (callback) => {
+        dhtSensor.read(sensor.type, sensor.pin, function(err, temperature) {
+            if (err) {
+                return callback(err)
+            }
+    
+            callback(null, temperature)
+        })
+    };
+
     sensor.cachedTemperature = null;
 })
 
