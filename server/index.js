@@ -1,22 +1,21 @@
 //Import libraries
 const express = require('express');
-const sensorlib = require('node-dht-sensor');
 
 //Express instance
 const app = express();
 
 //Import config
-const cfg = require('./config.json')
+const cfg = require('./config.json');
 
-//Generate API endpoints from sensors array
-cfg.sensors.forEach(function(sensor) {
+//Import sensor handling code
+const sensorReadings = require('./sensorReadings');
+
+//Generate API endpoints for each sensor
+
+sensorReadings.sensorArray.forEach(function(sensor) {
     app.get("/"+sensor.name, function (req, res) {
         //Read sensor when endpoint is accessed
-        sensorlib.read(sensor.type, sensor.pin, function(err, temperature) {
-            if (!err) {
-                res.send(temperature.toFixed(1) + '°C');
-            }
-        });
+        res.send(sensor.cachedTemperature.toFixed(1) + '°C');
         res.send(sensor.name); 
     });
 });
