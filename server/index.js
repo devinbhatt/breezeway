@@ -16,7 +16,6 @@ sensorReadings.sensorArray.forEach(function(sensor) {
     app.get("/"+sensor.name, function (req, res) {
         //Read sensor when endpoint is accessed
         res.send(sensor.cachedTemperature.toFixed(1) + '°C');
-        res.send(sensor.name); 
     });
 });
 

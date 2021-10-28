@@ -45,5 +45,3 @@ setInterval(() => {
 
 //Export sensor names and caches
 exports.sensorArray = cfg.sensors;
-//exports.getName = (sensorIndex) => cfg.sensors[sensorIndex].name;
-//exports.getCachedTemperature = (sensorIndex) => cfg.sensors[sensorIndex].cachedTemperature;
