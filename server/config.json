@@ -3,7 +3,7 @@
         "port":3000
     },
     "sensors": [
-        {"name":"Inside", "type":22, "pin":4},
-        {"name":"Window", "type":22, "pin":17}
+        {"name":"Inside", "type":22, "pin":17},
+        {"name":"Window", "type":22, "pin":4}
     ]
 }
