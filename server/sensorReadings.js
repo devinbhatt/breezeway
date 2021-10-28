@@ -22,7 +22,7 @@ cfg.sensors.forEach(function(sensor) {
             if (err) {
                 return callback(err)
             }
-    
+
             callback(null, temperature)
         })
     };
@@ -35,7 +35,7 @@ setInterval(() => {
     cfg.sensors.forEach(function(sensor) {
         sensor.getSensorReadings((err, temperature) => {
             if (err) {
-                return console.error(err)
+                return console.error(err, "on pin:", sensor.pin)
             }
 
             sensor.cachedTemperature = temperature;
@@ -46,4 +46,3 @@ setInterval(() => {
 //Export sensor names and caches
 exports.getName = (sensorIndex) => cfg.sensors[sensorIndex].name;
 exports.getCachedTemperature = (sensorIndex) => cfg.sensors[sensorIndex].cachedTemperature;
-    
