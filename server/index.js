@@ -15,7 +15,10 @@ const sensorReadings = require('./sensorReadings');
 sensorReadings.sensorArray.forEach(function(sensor) {
     app.get("/"+sensor.name, function (req, res) {
         //Read sensor when endpoint is accessed
-        res.send(sensor.cachedTemperature.toFixed(1) + '°C');
+        res.json({
+            "name":sensor.name,
+            "temperature":sensor.cachedTemperature.toFixed(1)
+        });
     });
 });
 
