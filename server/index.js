@@ -1,5 +1,6 @@
 //Import libraries
 const express = require('express');
+const cors = require('cors');
 
 //Express instance
 const app = express();
@@ -10,9 +11,10 @@ const cfg = require('./config.json');
 //Import sensor handling code
 const sensorReadings = require('./sensorReadings');
 
-//Generate API endpoints for each sensor
+
+//Generate API endpoints for each sensor (With CORS)
 sensorReadings.sensorArray.forEach(function(sensor) {
-    app.get("/"+sensor.name, function (req, res) {
+    app.get("/"+sensor.name, cors(), function (req, res) {
         //Read sensor when endpoint is accessed
         res.json({
             "name":sensor.name,
