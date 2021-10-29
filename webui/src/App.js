@@ -10,6 +10,16 @@ import { styled } from '@mui/system';
 //Create spacer for AppBar
 const Offset = styled('div')(({ theme }) => theme.mixins.toolbar);
 
+//API Fetch function
+async function getJsonFromApi(url) {
+  try {
+    let response = await fetch(url);
+    let responseJson = await response.json();
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 export default function App() {
   return (
     <Container maxWidth="sm">
@@ -26,7 +36,7 @@ export default function App() {
 
         <Grid container spacing={4} justifyContent="center">
           <Grid item xs={4}>
-            <SensorCard sensorName="Inside" sensorValue="72"/>
+            <SensorCard sensorName={getJsonFromApi('/Window').responseJson} sensorValue="72"/>
           </Grid>
           <Grid item xs={4}>
             <SensorCard sensorName="Outside" sensorValue="80"/>

@@ -11,7 +11,6 @@ const cfg = require('./config.json');
 const sensorReadings = require('./sensorReadings');
 
 //Generate API endpoints for each sensor
-
 sensorReadings.sensorArray.forEach(function(sensor) {
     app.get("/"+sensor.name, function (req, res) {
         //Read sensor when endpoint is accessed
