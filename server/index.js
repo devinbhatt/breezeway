@@ -11,6 +11,11 @@ const cfg = require('./config.json');
 //Import sensor handling code
 const sensorReadings = require('./sensorReadings');
 
+//Create an array with all sensor names (and therefore endpoint names)
+const sensorEndpoints = [];
+sensorReadings.sensorArray.forEach(function(sensor) {
+    sensorEndpoints.push(sensor.name);
+})
 
 //Generate API endpoints for each sensor (With CORS)
 sensorReadings.sensorArray.forEach(function(sensor) {
@@ -21,6 +26,11 @@ sensorReadings.sensorArray.forEach(function(sensor) {
             "temperature":sensor.cachedTemperature.toFixed(1)
         });
     });
+});
+
+//Create an endpoint that lists all the currently avalible sensors
+app.get("/endpoints", cors(), function(req, res) {
+    res.json(sensorEndpoints);
 });
 
 //Listener
