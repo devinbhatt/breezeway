@@ -12,6 +12,7 @@
     "@emotion/react": "latest",
     "@emotion/styled": "latest",
     "@mui/material": "latest",
+    "axios": "^0.24.0",
     "react": "latest",
     "react-dom": "latest",
     "react-scripts": "latest"

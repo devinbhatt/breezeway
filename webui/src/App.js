@@ -1,26 +1,45 @@
 //Library components
 import * as React from 'react';
+import { useState } from 'react';
+import axios from 'axios';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import { AppBar, Toolbar, Grid } from '@mui/material';
-import SensorCard from './SensorCard';
+import  SensorCard from './SensorCard';
 import { styled } from '@mui/system';
 
 //Create spacer for AppBar
 const Offset = styled('div')(({ theme }) => theme.mixins.toolbar);
 
-//API Fetch function
-async function getJsonFromApi(url) {
+//Create axios client for getting API data
+const client = axios.create({
+  baseURL: "http://172.31.199.12:3000"
+});
+
+async function getSensors() {
   try {
-    let response = await fetch(url);
-    let responseJson = await response.json();
-  } catch (error) {
-    console.error(error);
+    let res = await client.get('/endpoints')
+    return res.data
+  } catch (err) {
+    console.error(err);
   }
 }
 
+
 export default function App() {
+  //Create state variable for sensor cards
+  const [sensorCards, setSensorCards] = useState([]);
+  //create getData funtion and sensors array
+  React.useEffect(() => {
+    getSensors().then(apiResponse => {
+      apiResponse.forEach(element => {
+        console.log("ForEach: ", element);
+        setSensorCards(prevState => [prevState, <Grid item xs={4}><SensorCard endpoint={element} key={element}/></Grid>]);
+      });
+    });
+  }, []);
+
   return (
     <Container maxWidth="sm">
       <Box sx={{ my: 4 }}>
@@ -35,12 +54,7 @@ export default function App() {
         <Offset />
 
         <Grid container spacing={4} justifyContent="center">
-          <Grid item xs={4}>
-            <SensorCard sensorName={getJsonFromApi('/Window').responseJson} sensorValue="72"/>
-          </Grid>
-          <Grid item xs={4}>
-            <SensorCard sensorName="Outside" sensorValue="80"/>
-          </Grid>
+          {sensorCards}
         </Grid>
       </Box>
     </Container>
