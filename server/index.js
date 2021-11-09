@@ -23,7 +23,8 @@ sensorReadings.sensorArray.forEach(function(sensor) {
         //Read sensor when endpoint is accessed
         res.json({
             "name":sensor.name,
-            "temperature":sensor.cachedTemperature.toFixed(1)
+            "temperature":sensor.cachedTemperature.toFixed(1),
+            "lastRead":sensor.lastRead
         });
     });
 });

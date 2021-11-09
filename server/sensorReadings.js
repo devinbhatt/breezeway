@@ -28,6 +28,7 @@ setInterval(() => {
             }
 
             sensor.cachedTemperature = temperature;
+            sensor.lastRead = Date.now();
         })
     })
 }, 2000);
