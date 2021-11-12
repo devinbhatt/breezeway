@@ -33,8 +33,8 @@ export default function App() {
   //create getData funtion and sensors array
   React.useEffect(() => {
     getSensors().then(apiResponse => {
+      setSensorCards([]);
       apiResponse.forEach(element => {
-        console.log("ForEach: ", element);
         setSensorCards(prevState => [prevState, <Grid item xs={5}><SensorCard endpoint={element} key={element}/></Grid>]);
       });
     });
@@ -46,7 +46,7 @@ export default function App() {
         
         <AppBar position="fixed" color="primary">
           <Toolbar>
-            <Typography variant="h6" >
+            <Typography variant="h5" >
               Breezeway
             </Typography>
           </Toolbar>
