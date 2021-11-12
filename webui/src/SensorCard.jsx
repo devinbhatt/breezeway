@@ -1,8 +1,9 @@
 import { Typography } from '@mui/material';
 import { Card } from '@mui/material';
 import { CardContent } from '@mui/material';
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
+import TimeAgo from 'timeago-react';
 
 export default function SensorCard(props) {
   //Function to get data from enpoint
@@ -18,12 +19,16 @@ export default function SensorCard(props) {
   //Create state for sensor data
   const [data, setData] = useState({sensorName: "null", sensorValue: "null"});
 
-  React.useEffect(() => {
+  useEffect(() => {
     console.log("endpoint: ", props.endpoint);
     //Fetch data from API every 2 seconds
     const refresh = setInterval(() => {
       getData(props.endpoint).then(apiResponse => {
-        setData({sensorName: apiResponse.name, sensorValue: apiResponse.temperature});
+        setData({
+          sensorName: apiResponse.name,
+          sensorValue: apiResponse.temperature,
+          lastRead: apiResponse.lastRead
+        });
       });
     }, 2000);
 
@@ -39,6 +44,9 @@ export default function SensorCard(props) {
           </Typography>
           <Typography variant="h5" component="div">
             {data.sensorValue + " °C"}
+          </Typography>
+          <Typography variant="body2" component="div">
+            Last updated: <TimeAgo datetime={data.lastRead} />
           </Typography>
         </CardContent>
       </Card>

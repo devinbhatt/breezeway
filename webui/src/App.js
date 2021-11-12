@@ -35,7 +35,7 @@ export default function App() {
     getSensors().then(apiResponse => {
       apiResponse.forEach(element => {
         console.log("ForEach: ", element);
-        setSensorCards(prevState => [prevState, <Grid item xs={4}><SensorCard endpoint={element} key={element}/></Grid>]);
+        setSensorCards(prevState => [prevState, <Grid item xs={5}><SensorCard endpoint={element} key={element}/></Grid>]);
       });
     });
   }, []);

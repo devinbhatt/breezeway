@@ -15,7 +15,8 @@
     "axios": "^0.24.0",
     "react": "latest",
     "react-dom": "latest",
-    "react-scripts": "latest"
+    "react-scripts": "latest",
+    "timeago-react": "^3.0.4"
   },
   "browserslist": {
     "production": [
