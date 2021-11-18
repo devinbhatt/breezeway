@@ -19,19 +19,24 @@ cfg.sensors.forEach(function(sensor) {
     sensor.cachedTemperature = null;
 })
 
-//Update cache values every 2 seconds
-setInterval(() => {
-    cfg.sensors.forEach(function(sensor) {
-        sensor.getSensorReadings((err, temperature) => {
-            if (err) {
-                return console.error(err, "on pin:", sensor.pin)
-            }
+function startReading() {
+    //Update cache values every 2 seconds
+    setInterval(() => {
+        cfg.sensors.forEach(function(sensor) {
+            sensor.getSensorReadings((err, temperature) => {
+                if (err) {
+                    return console.error(err, "on pin:", sensor.pin)
+                }
 
-            sensor.cachedTemperature = temperature;
-            sensor.lastRead = Date.now();
+                sensor.cachedTemperature = temperature;
+                sensor.lastRead = Date.now();
+            })
         })
-    })
-}, 2000);
+    }, 2000);
+}
 
-//Export sensor names and caches
-exports.sensorArray = cfg.sensors;
+//Exports
+module.exports = {
+    sensorArray: cfg.sensors,
+    startReading
+}

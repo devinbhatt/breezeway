@@ -13,6 +13,9 @@ program
 program.parse(process.argv);
 const options = program.opts();
 
+//Start reading sensor data
+sensorReadings.startReading();
+
 //Create Express instance if API is enabled
 if (options.enableApi) {
     //Express instance
