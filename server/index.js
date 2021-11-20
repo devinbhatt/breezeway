@@ -15,7 +15,9 @@ const options = program.opts();
 
 //Start reading sensor data
 sensorReadings.startReading();
-
+sensorReadings.events.on('sensorUpdate', (sensor) => {
+    console.log(`Sensor ${sensor.name}, reading ${sensor.cachedTemperature}`);
+});
 //Create Express instance if API is enabled
 if (options.enableApi) {
     //Express instance

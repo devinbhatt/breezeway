@@ -1,6 +1,10 @@
 //Imports
 const dhtSensor = require('node-dht-sensor');
+const events = require('events')
 const cfg = require('./config.json');
+
+//Create event emitter
+const eventEmitter = new events.EventEmitter();
 
 //Add getSensorReadings and null cache to each sensor object
 cfg.sensors.forEach((sensor) => {
@@ -28,6 +32,7 @@ function startReading() {
 
                     sensor.cachedTemperature = temperature;
                     sensor.lastRead = Date.now();
+                    eventEmitter.emit('sensorUpdate', sensor);
                 });
             })
     }, 2000);
@@ -36,5 +41,6 @@ function startReading() {
 //Exports
 module.exports = {
     sensorArray: cfg.sensors,
+    events: eventEmitter,
     startReading
 }
