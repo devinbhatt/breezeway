@@ -1,7 +1,7 @@
 //Imports
 const dhtSensor = require('node-dht-sensor');
 const events = require('events')
-const cfg = require('./config.json');
+const cfg = require('./config/sensorConfig.json');
 
 //Create event emitter
 const eventEmitter = new events.EventEmitter();
