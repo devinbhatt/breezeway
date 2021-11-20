@@ -3,7 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const { program } = require('commander');
 const sensorReadings = require('./sensorReadings');
-import * as rtdb from './firebaseRTDB';
+const rtdb = require('./firebaseRTDB');
 
 
 //Define and parse CLI flags
