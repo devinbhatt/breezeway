@@ -1,37 +1,35 @@
-//Import library
+//Imports
 const dhtSensor = require('node-dht-sensor');
-
-//Import config
 const cfg = require('./config.json');
 
 //Add getSensorReadings and null cache to each sensor object
-cfg.sensors.forEach(function(sensor) {
-    sensor.getSensorReadings = (callback) => {
-        dhtSensor.read(sensor.type, sensor.pin, function(err, temperature) {
-            if (err) {
-                return callback(err)
-            }
+cfg.sensors.forEach((sensor) => {
+        sensor.getSensorReadings = (callback) => {
+            dhtSensor.read(sensor.type, sensor.pin, function (err, temperature) {
+                if (err) {
+                    return callback(err);
+                }
 
-            callback(null, temperature)
-        })
-    };
+                callback(null, temperature);
+            });
+        };
 
-    sensor.cachedTemperature = null;
-})
+        sensor.cachedTemperature = null;
+    })
 
 function startReading() {
     //Update cache values every 2 seconds
     setInterval(() => {
-        cfg.sensors.forEach(function(sensor) {
-            sensor.getSensorReadings((err, temperature) => {
-                if (err) {
-                    return console.error(err, "on pin:", sensor.pin)
-                }
+        cfg.sensors.forEach((sensor) => {
+                sensor.getSensorReadings((err, temperature) => {
+                    if (err) {
+                        return console.error(err, "on pin:", sensor.pin);
+                    }
 
-                sensor.cachedTemperature = temperature;
-                sensor.lastRead = Date.now();
+                    sensor.cachedTemperature = temperature;
+                    sensor.lastRead = Date.now();
+                });
             })
-        })
     }, 2000);
 }
 
