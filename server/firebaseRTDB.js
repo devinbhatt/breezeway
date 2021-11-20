@@ -1,7 +1,7 @@
 //Imports
 const { initializeApp } = require('firebase/app');
 const { getDatabase, ref, set, update } = require('firebase/database');
-const { firebaseConfig } = require('./config/firebaseConfig');
+const firebaseConfig = require('./config/firebaseConfig.json');
 
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
