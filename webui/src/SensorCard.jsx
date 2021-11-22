@@ -1,39 +1,26 @@
-import { Typography } from '@mui/material';
-import { Card } from '@mui/material';
-import { CardContent } from '@mui/material';
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import { Card, CardContent, Typography } from '@mui/material';
+import { getDatabase, off, onValue, ref } from '@firebase/database';
 import TimeAgo from 'timeago-react';
 
 export default function SensorCard(props) {
-  //Function to get data from enpoint
-  async function getData(endpoint) {
-    try {
-      let res = await axios.get("http://172.31.199.12:3000/"+endpoint);
-      return res.data;
-    } catch (err) {
-      console.error(err);
-    }
-  }
-
   //Create state for sensor data
-  const [data, setData] = useState({sensorName: "null", sensorValue: "null"});
+  const [data, setData] = useState({sensorName: props.endpoint, sensorValue: "null", lastRead: "null"});
+  const db = getDatabase();
+  const sensorRef = ref(db, '/' + props.endpoint);
 
   useEffect(() => {
-    console.log("endpoint: ", props.endpoint);
-    //Fetch data from API every 2 seconds
-    const refresh = setInterval(() => {
-      getData(props.endpoint).then(apiResponse => {
-        setData({
-          sensorName: apiResponse.name,
-          sensorValue: apiResponse.temperature,
-          lastRead: apiResponse.lastRead
-        });
+    //Create RTDB listner
+    onValue(sensorRef, (snapshot) => {
+      let data = snapshot.val();
+      setData({
+        sensorName: data.name,
+        sensorValue: data.temperature.toFixed(1),
+        lastRead: data.lastRead
       });
-    }, 2000);
-
-    //Clear the interval when component is unmounted
-    return() => clearInterval(refresh)
+    });
+    //Detach RTDB when component is unmounted
+    return() => off(sensorRef);
   }, []);
 
     return (

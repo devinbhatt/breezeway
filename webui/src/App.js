@@ -1,41 +1,36 @@
-//Library components
+//Imports
 import * as React from 'react';
 import { useState } from 'react';
-import axios from 'axios';
-import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
-import { AppBar, Toolbar, Grid } from '@mui/material';
-import  SensorCard from './SensorCard';
+import { AppBar, Box, Container, Grid, Toolbar, Typography} from '@mui/material';
 import { styled } from '@mui/system';
+import { initializeApp } from 'firebase/app';
+import { getDatabase, get, ref } from 'firebase/database';
+import  SensorCard from './SensorCard';
+import firebaseConfig from './firebaseConfig'
 
-//Create spacer for AppBar
-const Offset = styled('div')(({ theme }) => theme.mixins.toolbar);
+const firebaseApp = initializeApp(firebaseConfig);
+const db = getDatabase(firebaseApp);
 
-//Create axios client for getting API data
-const client = axios.create({
-  baseURL: "http://172.31.199.12:3000"
-});
-
-async function getSensors() {
+function getSensors() {
   try {
-    let res = await client.get('/endpoints')
-    return res.data
+    return get(ref(db, '/'));
   } catch (err) {
-    console.error(err);
+    console.error(`Error retreiving sensors from firebase: ${err}`);
   }
 }
 
+//Create spacer for AppBar
+const Offset = styled('div')(({ theme }) => theme.mixins.toolbar);
 
 export default function App() {
   //Create state variable for sensor cards
   const [sensorCards, setSensorCards] = useState([]);
   //create getData funtion and sensors array
   React.useEffect(() => {
-    getSensors().then(apiResponse => {
+    getSensors().then(dbQuery => {
       setSensorCards([]);
-      apiResponse.forEach(element => {
-        setSensorCards(prevState => [prevState, <Grid item xs={5}><SensorCard endpoint={element} key={element}/></Grid>]);
+      dbQuery.forEach(element => {
+        setSensorCards(prevState => [prevState, <Grid item xs={5}><SensorCard endpoint={element.val().name} key={element.val().name}/></Grid>]);
       });
     });
   }, []);
