@@ -1,0 +1,6 @@
+{
+    "sensors": [
+        {"name":"Inside", "type":22, "pin":17},
+        {"name":"Window", "type":22, "pin":4}
+    ]
+}
